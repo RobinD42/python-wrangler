@@ -25,7 +25,7 @@ needs to write the path name of that environment to stdout. There is
 an example given in this project folder that you can modify to your
 needs if desired.
 
-3. (Optional) Create an alias that soruces the activateEnv.sh script.
+3. (Optional) Create an alias that sources the activateEnv.sh script.
 See the header in activateEnv.sh for details and an example.
 
 

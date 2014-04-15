@@ -95,8 +95,14 @@ main () {
     fi
 
     # add my favorite alias
-    if [ ! -e "$BASEDIR/$BIN/py" ]; then
-	ln -s python $BASEDIR/$BIN/py
+    if [ ! -e "$BASEDIR/$BIN/py" -o "$RESET" == "yes" ]; then
+	rm -f $BASEDIR/$BIN/py
+	echo "Adding alias $BASEDIR/$BIN/py"
+	if [ -e "$BASEDIR/$BIN/python3$EXT" ]; then
+	    ln -s python3$EXT $BASEDIR/$BIN/py
+	else
+	    ln -s python$EXT $BASEDIR/$BIN/py
+	fi
     fi
 
     return 0

@@ -55,22 +55,27 @@ main () {
 	shift
     fi
 
-    BASEDIR=`python $EnvMapper $1`
-    if [ "$?" != "0" ]; then 
-	echo "Unable to select ENV $1"
-	return 1
+    if [ -d $1 ]; then
+        BASEDIR=$1
+    else
+        BASEDIR=`python $EnvMapper $1`
+        if [ "$?" != "0" ]; then 
+     	    echo "Unable to select ENV $1"
+	    return 1
+	fi
     fi
 
     # Setup the Scripts dir on Windows.  It may not exist yet if
-    # nothing has been installed, and we'll also add some aliases as
-    # symlinks so cygwin can easily find python.exe, etc.
+    # nothing has been installed, and we'll also add some aliases
+    # so cygwin can easily find python.exe, etc.
     if [ "$OSTYPE" == "cygwin" ]; then
 	if [ ! -e "$BASEDIR/Scripts" ]; then
 	    mkdir "$BASEDIR/Scripts"
 	fi
 	if [ ! -e "$BASEDIR/Scripts/python.exe" ]; then
 	    cd "$BASEDIR/Scripts"
-	    ln -s ../python*.exe .
+    	    #ln -s ../python*.exe .
+	    cp ../python*.exe .
 	    cd -
 	fi
 	# add a bin link too
@@ -84,7 +89,7 @@ main () {
     # Write the activation sctipt into the env if it 
     # doesn't already have one
     if [ ! -e "$_ActivateScript" -o "$RESET" == "yes" ]; then
-        writeActivateScript "$BASEDIR" $1 "$_ActivateScript" $BIN
+        writeActivateScript "$BASEDIR" $(basename $1) "$_ActivateScript" $BIN
     fi
 
     if [ ! -e "$BASEDIR/$BIN/python$EXT" ]; then

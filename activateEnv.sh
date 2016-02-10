@@ -190,11 +190,16 @@ writeActivateScript () {
 	# unset irrelavent variables
 	deactivate nondestructive
 
+	# NOTE: consider using this for setting VIRTUAL_ENV: 
+	# $(dirname $(cd "$(dirname ${BASH_SOURCE[0]})" && pwd))
 	VIRTUAL_ENV="@BASEDIR@"
 	export VIRTUAL_ENV
 
 	_OLD_VIRTUAL_PATH="$PATH"
 	PATH="$VIRTUAL_ENV/@BIN@:$PATH"
+	if [ "$OSTYPE" == "cygwin" ]; then 
+            PATH="$VIRTUAL_ENV:$PATH"
+	fi
 	export PATH
 
 	# unset PYTHONHOME if set

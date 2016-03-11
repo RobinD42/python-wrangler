@@ -190,9 +190,7 @@ writeActivateScript () {
 	# unset irrelavent variables
 	deactivate nondestructive
 
-	# NOTE: consider using this for setting VIRTUAL_ENV: 
-	# $(dirname $(cd "$(dirname ${BASH_SOURCE[0]})" && pwd))
-	VIRTUAL_ENV="@BASEDIR@"
+	VIRTUAL_ENV=$(cd "@BASEDIR@" && pwd)
 	export VIRTUAL_ENV
 
 	_OLD_VIRTUAL_PATH="$PATH"

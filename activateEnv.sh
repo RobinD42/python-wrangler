@@ -72,12 +72,12 @@ main () {
 	if [ ! -e "$BASEDIR/Scripts" ]; then
 	    mkdir "$BASEDIR/Scripts"
 	fi
-	if [ ! -e "$BASEDIR/Scripts/python.exe" ]; then
-	    cd "$BASEDIR/Scripts"
-    	    #ln -s ../python*.exe .
-	    cp ../python*.exe .
-	    cd -
-	fi
+	#if [ ! -e "$BASEDIR/Scripts/python.exe" ]; then
+	#    cd "$BASEDIR/Scripts"
+	#    #ln -s ../python*.exe .
+	#    cp ../python*.exe .
+	#    cd -
+	#fi
 	# add a bin link too
 	if [ ! -e "$BASEDIR/bin" ]; then
             ln -s Scripts "$BASEDIR/bin"

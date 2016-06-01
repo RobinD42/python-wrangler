@@ -16,9 +16,9 @@ VERSION=2.0
 
 usage () {
     echo "Usage: "
-    echo "       source activateEnv.sh [--reset] env-name"
-    echo "       activateEnv.sh --list"
-    echo "       activateEnv.sh --help"
+    echo "       source wrangler.sh [--reset] env-name"
+    echo "       wrangler.sh --list"
+    echo "       wrangler.sh --help"
     echo ""
 
     echo "Activates a named Python virtual env, setting it up first if"

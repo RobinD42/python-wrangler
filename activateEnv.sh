@@ -10,6 +10,8 @@
 EnvMapper=~/.myPyEnv
 _ActivateScript=
 
+VERSION=1.0
+
 #----------------------------------------------------------------------
 
 usage () {
@@ -33,6 +35,8 @@ main () {
     local BIN=bin
     local EXT=
     local RESET=no
+
+    echo "Python Wrangler:" $VERSION
 
     if [ "$OSTYPE" == "cygwin" ]; then 
 	EnvMapper=`cygpath -m $EnvMapper`

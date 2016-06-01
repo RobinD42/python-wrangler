@@ -1,6 +1,6 @@
-=======================
-Robin's Python Wrangler
-=======================
+============================
+Robin's Python Wrangler v1.0
+============================
 
 This project provides a handy script that will help you switch between
 and use the many different Pythons that may be on your system. It can

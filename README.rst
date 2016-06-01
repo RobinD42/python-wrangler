@@ -1,5 +1,5 @@
 ============================
-Robin's Python Wrangler v1.0
+Robin's Python Wrangler v2.0
 ============================
 
 This project provides a handy script that will help you switch between

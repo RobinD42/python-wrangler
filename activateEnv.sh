@@ -10,7 +10,7 @@
 EnvMapper=~/.myPyEnv
 _ActivateScript=
 
-VERSION=1.0
+VERSION=2.0
 
 #----------------------------------------------------------------------
 

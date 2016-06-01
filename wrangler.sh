@@ -48,12 +48,14 @@ main () {
 
     if [ $# -lt 1 -o "$1" == "--help" ]; then
 	usage
-	return 1
+	return 0
     fi
 
     if [ "$1" == "--list" ]; then
-	python $EnvMapper --list
-	return 1
+	for f in $EnvMapper/*; do
+	    echo "$f : " $(cat $f)
+	done
+	return 0
     fi
     
     if [ "$1" == "--reset" ]; then 
@@ -63,27 +65,19 @@ main () {
 
     if [ -d $1 ]; then
         BASEDIR=$1
+    elif [ -e $EnvMapper/$1 ]; then
+	BASEDIR=$(cat $EnvMapper/$1)
     else
-        BASEDIR=`python $EnvMapper $1`
-        if [ "$?" != "0" ]; then 
-     	    echo "Unable to select ENV $1"
-	    return 1
-	fi
+     	echo "Unable to select ENV $1"
+	return 1
     fi
 
     # Setup the Scripts dir on Windows.  It may not exist yet if
     # nothing has been installed, and we'll also add some aliases
-    # so cygwin can easily find python.exe, etc.
     if [ "$OSTYPE" == "cygwin" ]; then
 	if [ ! -e "$BASEDIR/Scripts" ]; then
 	    mkdir "$BASEDIR/Scripts"
 	fi
-	#if [ ! -e "$BASEDIR/Scripts/python.exe" ]; then
-	#    cd "$BASEDIR/Scripts"
-	#    #ln -s ../python*.exe .
-	#    cp ../python*.exe .
-	#    cd -
-	#fi
 	# add a bin link too
 	if [ ! -e "$BASEDIR/bin" ]; then
             ln -s Scripts "$BASEDIR/bin"
@@ -102,6 +96,7 @@ main () {
 	echo "WARNING: No $BIN/python$EXE found in environment"
 	if [ -e "$BASEDIR/$BIN/python3$EXT" ]; then
 	    echo -e "\tbut $BIN/python3$EXT does exist, be sure to use it instead."
+	    echo -e "\tOr you can do: cp $BIN/python3$EXT $BIN/python$EXT"
 	fi
     fi
 
@@ -191,7 +186,6 @@ writeActivateScript () {
 	        return 1
 	    fi
 	}
-
 
 	# unset irrelavent variables
 	deactivate nondestructive

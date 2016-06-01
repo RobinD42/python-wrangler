@@ -10,25 +10,25 @@ Pythons so they can be activated the same way that a virtualenv can.)
 The script can also be used with Cygwin's bash to switch between
 multiple Windows Pythons or virtualenvs as well.
 
-Please see the header in activateEnv.sh for more details.
+Please see the header in wrangler.sh for more details.
 
 
 Installation
 ------------
 
-1. Copy or link activateEnv.sh someplace where you can have easy
+1. Copy or link wrangler.sh someplace where you can have easy
 access to it.
 
-2. Create a Python script in your home directory named .myPyEnv. This
-script will be run with an environment name on the command-line and
-needs to write the path name of that environment to stdout. There is
-an example given in this project folder that you can modify to your
-needs if desired.
+2. Create a folder in your home directory named .myPyEnv. Place one
+file in this folder for each Python environment you want to be able to
+switch to.  The name of the file is the name you will use on the
+command line, and the contents of the file is the path to the root of
+that environment.
 
 3. (Optional) Create an alias that sources the activateEnv.sh script.
 For example:
 
-    alias workon='source ~/bin/activateEnv.sh'
+    alias wrangler='source ~/bin/wrangler.sh'
 
 Even you can be a snake wrangler!
 Have fun.

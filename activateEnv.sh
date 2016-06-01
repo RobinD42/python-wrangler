@@ -22,10 +22,12 @@ usage () {
     echo ""
 
     echo "Activates a named Python virtual env, setting it up first if"
-    echo "neccessary.  The available environments are defined by a python"
-    echo "script in $EnvMapper, which should take an env name"
-    echo "on the command line and output the path where that env is located."
-
+    echo "neccessary.  The available environments are defined by files"
+    echo "in $EnvMapper, where each file containes a path to a Python"
+    echo "environment, and the name of the file is the name used to "
+    echo "refer to the environment.  In addition, an environments's path"
+    echo "name can be given directly without needing a mapping file in"
+    echo "$EnvMapper."
 }
 
 

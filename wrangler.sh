@@ -43,14 +43,14 @@ get_basedir () {
     
     if [ -L $ITEM ]; then
 	# if it is a symlink
-	DIR=$(readlink $ITEM)
+	DIR=$(readlink -f $ITEM)
 	
     elif [ -d $ITEM ]; then
 	# if it is a dir, canonicalize it
 	DIR=$(readlink -f $ITEM)
 
     elif [ -f $ITEM ]; then
-	# if it's a regular file then use the contents
+	# if it's a regular file then use the contents as-is
 	DIR=$(cat $ITEM)
     else
 	>&2 echo "ERROR: I don't know what to do with $ITEM"

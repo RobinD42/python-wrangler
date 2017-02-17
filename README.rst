@@ -32,3 +32,6 @@ For example:
 
 Even you can be a snake wrangler!
 Have fun.
+
+.. image:: wrangler.jpg
+   :align: center

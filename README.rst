@@ -19,11 +19,15 @@ Installation
 1. Copy or link wrangler.sh someplace where you can have easy
 access to it.
 
-2. Create a folder in your home directory named .myPyEnv. Place one
-file in this folder for each Python environment you want to be able to
-switch to.  The name of the file is the name you will use on the
-command line, and the contents of the file is the path to the root of
-that environment.
+2. Create a folder in your home directory named .myPyEnv. Each item in this
+folder will refer to a Python environment that you want to be able to switch
+to or manage with this tool. The items can be one of the following:
+
+  * A file containing the full path to to the root of a Python environment.
+  * A sym-link pointing to a Python environment.
+  * A folder containing a Python environment.
+
+The name of the item is the name you will use on the wrangler command line.
 
 3. (Optional) Create an alias that sources the activateEnv.sh script.
 For example:

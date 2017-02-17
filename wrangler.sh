@@ -70,7 +70,6 @@ main () {
     echo "Python Wrangler:" $VERSION
 
     if [ "$OSTYPE" == "cygwin" ]; then 
-	EnvMapper=`cygpath -m $EnvMapper`
 	BIN=Scripts
 	EXT=.exe
     fi

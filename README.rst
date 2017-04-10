@@ -7,8 +7,9 @@ and use the many different Pythons that may be on your system. It can
 deal with multiple full Python install trees as well as virtualenvs.
 (This is accomplished by injecting an activate script into the full
 Pythons so they can be activated the same way that a virtualenv can.)
-The script can also be used with Cygwin's bash to switch between
-multiple Windows Pythons or virtualenvs as well.
+In addition to working on Linux, OSX or other *nix systems, the script 
+can also be used on Windows with Cygwin's bash to switch between multiple 
+Windows Pythons or virtualenvs.
 
 Please see the header in wrangler.sh for more details.
 

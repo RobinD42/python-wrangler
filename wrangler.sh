@@ -11,7 +11,7 @@ EnvMapper_txt="~/.myPyEnv"
 EnvMapper=~/.myPyEnv
 _ActivateScript=
 
-VERSION=2.1
+VERSION=2.2
 
 #----------------------------------------------------------------------
 
@@ -113,11 +113,15 @@ main () {
     fi
 
     _ActivateScript="$BASEDIR/$BIN/activate"
+    _ActivateThisScript="$BASEDIR/$BIN/activate_this.py"
 
-    # Write the activation sctipt into the env if it 
+    # Write the activation script(s) into the env if it 
     # doesn't already have one
     if [ ! -e "$_ActivateScript" -o "$RESET" == "yes" ]; then
         writeActivateScript "$BASEDIR" $(basename $1) "$_ActivateScript" $BIN
+    fi
+    if [ ! -e "$_ActivateThisScript" -o "$RESET" == "yes" ]; then
+        writeActivateThisScript "$_ActivateThisScript"
     fi
 
     if [ ! -e "$BASEDIR/$BIN/python$EXT" ]; then
@@ -252,10 +256,56 @@ writeActivateScript () {
 }
 
 
+writeActivateThisScript () {
+    local SCRIPT=$1
+
+    if [ -e "$SCRIPT" ]; then
+	mv "$SCRIPT" "$SCRIPT.save"
+    fi
+
+    echo "Writing new activate_this.py script."
+    cat <<-"EOF" > "$SCRIPT"
+"""By using execfile(this_file, dict(__file__=this_file)) you will
+activate this virtualenv environment.
+
+This can be used when you must use an existing Python interpreter, not
+the virtualenv bin/python
+"""
+
+try:
+    __file__
+except NameError:
+    raise AssertionError(
+        "You must run this like execfile('path/to/activate_this.py', dict(__file__='path/to/activate_this.py'))")
+import sys
+import os
+
+base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if sys.platform == 'win32':
+    site_packages = os.path.join(base, 'Lib', 'site-packages')
+else:
+    site_packages = os.path.join(base, 'lib', 'python%s' % sys.version[:3], 'site-packages')
+prev_sys_path = list(sys.path)
+import site
+site.addsitedir(site_packages)
+sys.real_prefix = sys.prefix
+sys.prefix = base
+# Move the added items to the front of the path:
+new_sys_path = []
+for item in list(sys.path):
+    if item not in prev_sys_path:
+        new_sys_path.append(item)
+        sys.path.remove(item)
+sys.path[:0] = new_sys_path
+	EOF
+}
+
+
 cleanup () {
     unset -f main
     unset -f usage
     unset -f writeActivateScript
+    unset -f writeActivateThisScript
     unset -f cleanup
     unset EnvMapper
 }

@@ -11,7 +11,7 @@ EnvMapper_txt="~/.myPyEnv"
 EnvMapper=~/.myPyEnv
 _ActivateScript=
 
-VERSION=2.2
+VERSION=2.3
 
 #----------------------------------------------------------------------
 
@@ -106,10 +106,10 @@ main () {
 	if [ ! -e "$BASEDIR/Scripts" ]; then
 	    mkdir "$BASEDIR/Scripts"
 	fi
-	# add a bin link too
-	if [ ! -e "$BASEDIR/bin" ]; then
-            ln -s Scripts "$BASEDIR/bin"
-	fi
+	## add a bin link too
+	#if [ ! -e "$BASEDIR/bin" ]; then
+        #    ln -s Scripts "$BASEDIR/bin"
+	#fi
     fi
 
     _ActivateScript="$BASEDIR/$BIN/activate"

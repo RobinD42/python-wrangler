@@ -46,19 +46,19 @@ get_basedir () {
     local DIR
     
     if [ -L $ITEM ]; then
-	# if it is a symlink
-	DIR=$(python -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' $ITEM)
-	
+        # if it is a symlink
+        DIR=$(python -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' $ITEM)
+        
     elif [ -d $ITEM ]; then
-	# if it is a dir, canonicalize it
-	DIR=$(readlink -f $ITEM)
+        # if it is a dir, canonicalize it
+        DIR=$(readlink -f $ITEM)
 
     elif [ -f $ITEM ]; then
-	# if it's a regular file then use the contents as-is
-	DIR=$(cat $ITEM)
+        # if it's a regular file then use the contents as-is
+        DIR=$(cat $ITEM)
     else
-	>&2 echo "ERROR: I don't know what to do with $ITEM"
-	return 1
+        >&2 echo "ERROR: I don't know what to do with $ITEM"
+        return 1
     fi
 
     echo $DIR
@@ -74,48 +74,48 @@ main () {
     echo "Python Wrangler:" $VERSION
 
     if [ "$OSTYPE" == "cygwin" ]; then 
-	BIN=Scripts
-	EXT=.exe
+        BIN=Scripts
+        EXT=.exe
     fi
 
     if [ $# -lt 1 -o "$1" == "--help" ]; then
-	usage
-	return 0
+        usage
+        return 0
     fi
 
     if [ "$1" == "--list" ]; then
-	for f in $EnvMapper1/* $EnvMapper2/*; do
-	    printf "%10s: %s\n" "$(basename $f)"  "$(get_basedir $f)"
-	done
-	return 0
+        for f in $EnvMapper1/* $EnvMapper2/*; do
+            printf "%10s: %s\n" "$(basename $f)"  "$(get_basedir $f)"
+        done
+        return 0
     fi
     
     if [ "$1" == "--reset" ]; then 
-	RESET=yes
-	shift
+        RESET=yes
+        shift
     fi
 
     if [ -d $1 ]; then
         BASEDIR=$(readlink -f $1)
     elif [ -e $EnvMapper1/$1 ]; then
-	BASEDIR=$(get_basedir $EnvMapper1/$1)
+        BASEDIR=$(get_basedir $EnvMapper1/$1)
     elif [ -e $EnvMapper2/$1 ]; then
-	BASEDIR=$(get_basedir $EnvMapper2/$1)
+        BASEDIR=$(get_basedir $EnvMapper2/$1)
     else
-     	echo "Unable to select ENV $1"
-	return 1
+             echo "Unable to select ENV $1"
+        return 1
     fi
 
     # Setup the Scripts dir on Windows.  It may not exist yet if
     # nothing has been installed, and we'll also add some aliases
     if [ "$OSTYPE" == "cygwin" ]; then
-	if [ ! -e "$BASEDIR/Scripts" ]; then
-	    mkdir "$BASEDIR/Scripts"
-	fi
-	## add a bin link too
-	#if [ ! -e "$BASEDIR/bin" ]; then
+        if [ ! -e "$BASEDIR/Scripts" ]; then
+            mkdir "$BASEDIR/Scripts"
+        fi
+        ## add a bin link too
+        #if [ ! -e "$BASEDIR/bin" ]; then
         #    ln -s Scripts "$BASEDIR/bin"
-	#fi
+        #fi
     fi
 
     _ActivateScript="$BASEDIR/$BIN/activate"
@@ -131,11 +131,11 @@ main () {
     fi
 
     if [ ! -e "$BASEDIR/$BIN/python$EXT" ]; then
-	echo "WARNING: No $BIN/python$EXE found in environment"
-	if [ -e "$BASEDIR/$BIN/python3$EXT" ]; then
-	    echo -e "\tbut $BIN/python3$EXT does exist, be sure to use it instead."
-	    echo -e "\tOr you can do: cp $BIN/python3$EXT $BIN/python$EXT"
-	fi
+        echo "WARNING: No $BIN/python$EXE found in environment"
+        if [ -e "$BASEDIR/$BIN/python3$EXT" ]; then
+            echo -e "\tbut $BIN/python3$EXT does exist, be sure to use it instead."
+            echo -e "\tOr you can do: cp $BIN/python3$EXT $BIN/python$EXT"
+        fi
     fi
 
     # add my favorite alias
@@ -162,103 +162,103 @@ writeActivateScript () {
     local BIN=$4
 
     if [ -e "$SCRIPT" ]; then
-	mv "$SCRIPT" "$SCRIPT.save"
+        mv "$SCRIPT" "$SCRIPT.save"
     fi
 
     echo "Writing new activate script."
     cat <<-"EOF" | sed "s!@BASEDIR@!$BASEDIR!" | sed s!@PROMPT@!$PROMPT! | sed s!@BIN@!$BIN!  > "$SCRIPT"
-	# This file must be used with "source bin/activate" *from bash*
-	# you cannot run it directly
-	
-	deactivate () {
-	    # reset old environment variables
-	    if [ -n "$_OLD_VIRTUAL_PATH" ] ; then
-	        PATH="$_OLD_VIRTUAL_PATH"
-	        export PATH
-	        unset _OLD_VIRTUAL_PATH
-	    fi
-	    if [ -n "$_OLD_VIRTUAL_PYTHONHOME" ] ; then
-	        PYTHONHOME="$_OLD_VIRTUAL_PYTHONHOME"
-	        export PYTHONHOME
-	        unset _OLD_VIRTUAL_PYTHONHOME
-	    fi
+        # This file must be used with "source bin/activate" *from bash*
+        # you cannot run it directly
+        
+        deactivate () {
+            # reset old environment variables
+            if [ -n "$_OLD_VIRTUAL_PATH" ] ; then
+                PATH="$_OLD_VIRTUAL_PATH"
+                export PATH
+                unset _OLD_VIRTUAL_PATH
+            fi
+            if [ -n "$_OLD_VIRTUAL_PYTHONHOME" ] ; then
+                PYTHONHOME="$_OLD_VIRTUAL_PYTHONHOME"
+                export PYTHONHOME
+                unset _OLD_VIRTUAL_PYTHONHOME
+            fi
 
-	    # This should detect bash and zsh, which have a hash command that must
-	    # be called to get it to forget past commands.  Without forgetting
-	    # past commands the $PATH changes we made may not be respected
-	    if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
-	        hash -r
-	    fi
-	
-	    if [ -n "$_OLD_VIRTUAL_PS1" ] ; then
-	        PS1="$_OLD_VIRTUAL_PS1"
-	        export PS1
-	        unset _OLD_VIRTUAL_PS1
-	    fi
+            # This should detect bash and zsh, which have a hash command that must
+            # be called to get it to forget past commands.  Without forgetting
+            # past commands the $PATH changes we made may not be respected
+            if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
+                hash -r
+            fi
+        
+            if [ -n "$_OLD_VIRTUAL_PS1" ] ; then
+                PS1="$_OLD_VIRTUAL_PS1"
+                export PS1
+                unset _OLD_VIRTUAL_PS1
+            fi
 
-	    unset VIRTUAL_ENV
-	    if [ ! "$1" = "nondestructive" ] ; then
-	        # Self destruct!
-	        unset -f deactivate
-	        unset -f cdenv
-	        unset -f cdsitepackages
-	    fi
-	}
+            unset VIRTUAL_ENV
+            if [ ! "$1" = "nondestructive" ] ; then
+                # Self destruct!
+                unset -f deactivate
+                unset -f cdenv
+                unset -f cdsitepackages
+            fi
+        }
 
-	cdenv () {
-	    if [ -d "$VIRTUAL_ENV" ]; then
-	        cd "$VIRTUAL_ENV"
-	    else
-	        echo "\"$VIRTUAL_ENV\" does not exist!"
-	        return 1
-	    fi
-	}
+        cdenv () {
+            if [ -d "$VIRTUAL_ENV" ]; then
+                cd "$VIRTUAL_ENV"
+            else
+                echo "\"$VIRTUAL_ENV\" does not exist!"
+                return 1
+            fi
+        }
 
-	cdsitepackages () {
-	    if [ -d "$VIRTUAL_ENV"/Lib/site-packages ]; then 
-	        cd "$VIRTUAL_ENV"/Lib/site-packages
-	    elif [ -d "$VIRTUAL_ENV"/lib/python?.?/site-packages ]; then
-	        cd  "$VIRTUAL_ENV"/lib/python?.?/site-packages
-	    else	
-	        echo "site-packages not found in \"$VIRTUAL_ENV\""
-	        return 1
-	    fi
-	}
+        cdsitepackages () {
+            if [ -d "$VIRTUAL_ENV"/Lib/site-packages ]; then 
+                cd "$VIRTUAL_ENV"/Lib/site-packages
+            elif [ -d "$VIRTUAL_ENV"/lib/python?.?/site-packages ]; then
+                cd  "$VIRTUAL_ENV"/lib/python?.?/site-packages
+            else	
+                echo "site-packages not found in \"$VIRTUAL_ENV\""
+                return 1
+            fi
+        }
 
-	# unset irrelavent variables
-	deactivate nondestructive
+        # unset irrelavent variables
+        deactivate nondestructive
 
-	VIRTUAL_ENV=$(cd "@BASEDIR@" && pwd)
-	export VIRTUAL_ENV
+        VIRTUAL_ENV=$(cd "@BASEDIR@" && pwd)
+        export VIRTUAL_ENV
 
-	_OLD_VIRTUAL_PATH="$PATH"
-	PATH="$VIRTUAL_ENV/@BIN@:$PATH"
-	if [ "$OSTYPE" == "cygwin" ]; then 
+        _OLD_VIRTUAL_PATH="$PATH"
+        PATH="$VIRTUAL_ENV/@BIN@:$PATH"
+        if [ "$OSTYPE" == "cygwin" ]; then 
             PATH="$VIRTUAL_ENV:$PATH"
-	fi
-	export PATH
+        fi
+        export PATH
 
-	# unset PYTHONHOME if set
-	# this will fail if PYTHONHOME is set to the empty string (which is bad anyway)
-	# could use `if (set -u; : $PYTHONHOME) ;` in bash
-	if [ -n "$PYTHONHOME" ] ; then
-	    _OLD_VIRTUAL_PYTHONHOME="$PYTHONHOME"
-	    unset PYTHONHOME
-	fi
+        # unset PYTHONHOME if set
+        # this will fail if PYTHONHOME is set to the empty string (which is bad anyway)
+        # could use `if (set -u; : $PYTHONHOME) ;` in bash
+        if [ -n "$PYTHONHOME" ] ; then
+            _OLD_VIRTUAL_PYTHONHOME="$PYTHONHOME"
+            unset PYTHONHOME
+        fi
 
-	if [ -z "$VIRTUAL_ENV_DISABLE_PROMPT" ] ; then
-	    _OLD_VIRTUAL_PS1="$PS1"
-	    PS1="(@PROMPT@)$PS1"
-	    export PS1
-	fi
+        if [ -z "$VIRTUAL_ENV_DISABLE_PROMPT" ] ; then
+            _OLD_VIRTUAL_PS1="$PS1"
+            PS1="(@PROMPT@)$PS1"
+            export PS1
+        fi
 
-	# This should detect bash and zsh, which have a hash command that must
-	# be called to get it to forget past commands.  Without forgetting
-	# past commands the $PATH changes we made may not be respected
-	if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
-	    hash -r
-	fi
-	EOF
+        # This should detect bash and zsh, which have a hash command that must
+        # be called to get it to forget past commands.  Without forgetting
+        # past commands the $PATH changes we made may not be respected
+        if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
+            hash -r
+        fi
+        EOF
 }
 
 
@@ -266,7 +266,7 @@ writeActivateThisScript () {
     local SCRIPT=$1
 
     if [ -e "$SCRIPT" ]; then
-	mv "$SCRIPT" "$SCRIPT.save"
+        mv "$SCRIPT" "$SCRIPT.save"
     fi
 
     echo "Writing new activate_this.py script."
@@ -303,7 +303,7 @@ for item in list(sys.path):
         new_sys_path.append(item)
         sys.path.remove(item)
 sys.path[:0] = new_sys_path
-	EOF
+        EOF
 }
 
 

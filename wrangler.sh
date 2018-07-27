@@ -24,7 +24,7 @@ usage () {
     echo "       wrangler.sh --help"
     echo ""
 
-    cat <<EOF
+    cat <<EOHelp
 Activates a named Python [virtual] env, setting it up first if neccessary.  
 The available environments are defined by files, links or folders located 
 in the $EnvMapper1_txt or $EnvMapper2_txt folders. Items there provide a map 
@@ -34,7 +34,7 @@ Python environment, a file that contains the path to the Python environment,
 or the Python environment itself.  Finally, wrangler can also be used without
 an item in one of the environment folders, just give a full or relative path 
 to the environment you want to switch to.
-EOF
+EOHelp
     
 }
 
@@ -137,17 +137,6 @@ main () {
             echo -e "\tOr you can do: cp $BIN/python3$EXT $BIN/python$EXT"
         fi
     fi
-
-    # add my favorite alias
-#    if [ ! -e "$BASEDIR/$BIN/py" -o "$RESET" == "yes" ]; then
-#	rm -f $BASEDIR/$BIN/py
-#	echo "Adding alias $BASEDIR/$BIN/py"
-#	if [ -e "$BASEDIR/$BIN/python3$EXT" ]; then
-#	    ln -s python3$EXT $BASEDIR/$BIN/py
-#	else
-#	    ln -s python$EXT $BASEDIR/$BIN/py
-#	fi
- #   fi
 
     return 0
 }
@@ -258,7 +247,7 @@ writeActivateScript () {
         if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
             hash -r
         fi
-        EOF
+EOF
 }
 
 
@@ -303,7 +292,7 @@ for item in list(sys.path):
         new_sys_path.append(item)
         sys.path.remove(item)
 sys.path[:0] = new_sys_path
-        EOF
+EOF
 }
 
 

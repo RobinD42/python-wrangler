@@ -7,11 +7,13 @@
 
 #set -o xtrace
 
-EnvMapper_txt="~/.myPyEnv"
-EnvMapper=~/.myPyEnv
+EnvMapper1_txt="~/.myPyEnv"
+EnvMapper1=~/.myPyEnv
+EnvMapper2_txt="~/.edm/envs"
+EnvMapper2=~/.edm/envs
 _ActivateScript=
 
-VERSION=2.3
+VERSION=2.4
 
 #----------------------------------------------------------------------
 
@@ -22,16 +24,18 @@ usage () {
     echo "       wrangler.sh --help"
     echo ""
 
-    echo "Activates a named Python [virtual] env, setting it up first if"
-    echo "neccessary.  The available environments are defined by files,"
-    echo "links or folders located in in $EnvMapper_txt. Items there provide"
-    echo "a map from a simple name (the item in $EnvMapper_txt) to the base"
-    echo "dir of a Python installation or virtual environment. It should"
-    echo "be either a symlink to the Python environment, a file that"
-    echo "contains the path to the Python environment, or the Python"
-    echo "environment itself.  Finally, wrangler can also be used without"
-    echo "an item in the $EnvMapper_txt folder, just give a full or relative"
-    echo "path to the environment you want to switch to."
+    cat <<EOF
+Activates a named Python [virtual] env, setting it up first if neccessary.  
+The available environments are defined by files, links or folders located 
+in the $EnvMapper1_txt or $EnvMapper2_txt folders. Items there provide a map 
+from a simple name (the item in the folder) to the base dir of a Python 
+installation or virtual environment. It should be either a symlink to the 
+Python environment, a file that contains the path to the Python environment, 
+or the Python environment itself.  Finally, wrangler can also be used without
+an item in one of the environment folders, just give a full or relative path 
+to the environment you want to switch to.
+EOF
+    
 }
 
 
@@ -43,7 +47,7 @@ get_basedir () {
     
     if [ -L $ITEM ]; then
 	# if it is a symlink
-	DIR=$(readlink -f $ITEM)
+	DIR=$(python -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' $ITEM)
 	
     elif [ -d $ITEM ]; then
 	# if it is a dir, canonicalize it
@@ -80,7 +84,7 @@ main () {
     fi
 
     if [ "$1" == "--list" ]; then
-	for f in $EnvMapper/*; do
+	for f in $EnvMapper1/* $EnvMapper2/*; do
 	    printf "%10s: %s\n" "$(basename $f)"  "$(get_basedir $f)"
 	done
 	return 0
@@ -93,8 +97,10 @@ main () {
 
     if [ -d $1 ]; then
         BASEDIR=$(readlink -f $1)
-    elif [ -e $EnvMapper/$1 ]; then
-	BASEDIR=$(get_basedir $EnvMapper/$1)
+    elif [ -e $EnvMapper1/$1 ]; then
+	BASEDIR=$(get_basedir $EnvMapper1/$1)
+    elif [ -e $EnvMapper2/$1 ]; then
+	BASEDIR=$(get_basedir $EnvMapper2/$1)
     else
      	echo "Unable to select ENV $1"
 	return 1
@@ -307,7 +313,8 @@ cleanup () {
     unset -f writeActivateScript
     unset -f writeActivateThisScript
     unset -f cleanup
-    unset EnvMapper
+    unset EnvMapper1
+    unset EnvMapper2
 }
 
 #----------------------------------------------------------------------

@@ -13,7 +13,7 @@ EnvMapper2_txt="~/.edm/envs"
 EnvMapper2=~/.edm/envs
 _ActivateScript=
 
-VERSION=2.4
+VERSION=2.5
 
 #----------------------------------------------------------------------
 

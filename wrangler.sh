@@ -13,7 +13,7 @@ EnvMapper2_txt="~/.edm/envs"
 EnvMapper2=~/.edm/envs
 _ActivateScript=
 
-VERSION=2.5
+VERSION=2.7
 
 #----------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ main () {
 
     echo "Python Wrangler:" $VERSION
 
-    if [ "$OSTYPE" == "cygwin" ]; then 
+    if [ "$OSTYPE" == "cygwin" -o "$OSTYPE" == "msys" ]; then 
         BIN=Scripts
         EXT=.exe
     fi
@@ -108,7 +108,7 @@ main () {
 
     # Setup the Scripts dir on Windows.  It may not exist yet if
     # nothing has been installed, and we'll also add some aliases
-    if [ "$OSTYPE" == "cygwin" ]; then
+    if [ "$OSTYPE" == "cygwin" -o "$OSTYPE" == "msys" ]; then
         if [ ! -e "$BASEDIR/Scripts" ]; then
             mkdir "$BASEDIR/Scripts"
         fi
@@ -222,7 +222,7 @@ writeActivateScript () {
 
         _OLD_VIRTUAL_PATH="$PATH"
         PATH="$VIRTUAL_ENV/@BIN@:$PATH"
-        if [ "$OSTYPE" == "cygwin" ]; then 
+        if [ "$OSTYPE" == "cygwin" -o "$OSTYPE" == "msys" ]; then 
             PATH="$VIRTUAL_ENV:$PATH"
         fi
         export PATH

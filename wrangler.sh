@@ -13,7 +13,7 @@ EnvMapper2_txt="~/.edm/envs"
 EnvMapper2=~/.edm/envs
 _ActivateScript=
 
-VERSION=2.7
+VERSION=2.8
 
 #----------------------------------------------------------------------
 
@@ -194,25 +194,8 @@ writeActivateScript () {
             fi
         }
 
-        cdenv () {
-            if [ -d "$VIRTUAL_ENV" ]; then
-                cd "$VIRTUAL_ENV"
-            else
-                echo "\"$VIRTUAL_ENV\" does not exist!"
-                return 1
-            fi
-        }
-
-        cdsitepackages () {
-            if [ -d "$VIRTUAL_ENV"/Lib/site-packages ]; then 
-                cd "$VIRTUAL_ENV"/Lib/site-packages
-            elif [ -d "$VIRTUAL_ENV"/lib/python?.?/site-packages ]; then
-                cd  "$VIRTUAL_ENV"/lib/python?.?/site-packages
-            else	
-                echo "site-packages not found in \"$VIRTUAL_ENV\""
-                return 1
-            fi
-        }
+        alias cdenv='cd $(python -c "import sys; print(sys.prefix)"'
+        alias cdsitepackages='cd $(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")'
 
         # unset irrelavent variables
         deactivate nondestructive

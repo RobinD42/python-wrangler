@@ -13,7 +13,7 @@ EnvMapper2_txt="~/.edm/envs"
 EnvMapper2=~/.edm/envs
 _ActivateScript=
 
-VERSION=2.8
+VERSION=2.8.1
 
 #----------------------------------------------------------------------
 
@@ -193,9 +193,6 @@ writeActivateScript () {
                 unset -f cdsitepackages
             fi
         }
-
-        alias cdenv='cd $(python -c "import sys; print(sys.prefix)"'
-        alias cdsitepackages='cd $(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")'
 
         # unset irrelavent variables
         deactivate nondestructive
